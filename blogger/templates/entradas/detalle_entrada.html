@@ -1,0 +1,45 @@
+{% extends 'layout/institucion_base.html' %}
+
+{% load static %}
+
+{% block content_instituto %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="text-center">
+				<img  src='{% static entrada.imagen_portada.url %}' class="img-responsive" alt="img-{{ entrada.titulo_entrada }}" style="display: inline;"/>
+			</div>
+			<h3>{{ entrada.titulo_entrada }}</h3>
+			{{ entrada.descripcion_entrada|safe }}
+			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
+				<div class="text-center" style="margin-top: 10px;">
+					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">Editar entrada</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="page-header">
+		<h3>Comentarios <a href="{% url 'institucion_comentario_crear' object.slug_institucion entrada.slug_entrada %}" class="btn btn-default open-modal" data-toggle="modal" data-target="#Modal">Comentar</a></h3>
+	</div>
+	<div class="row">
+		{% for comentario in entrada.comentario_set.all %}
+			<div class="col-md-12">
+				<p><b>Usuario:</b> {{ comentario.usuario.first_name }} {{ comentario.usuario.last_name }}</p>
+				<p><b>Fecha de publicación:</b> {{ comentario.fecha }}</p>
+				{{ comentario.comentario_entrada|safe }}
+				{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or comentario.user == user %}
+					<a href="{% url 'institucion_comentario_editar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-warning open-modal" data-toggle="modal" data-target="#Modal">Editar comentario</a>
+				{% endif %}
+				<hr/>
+			</div>
+		{% empty %}
+			<div class="col-md-12 text-center">
+				<h4>No hay comentarios en la entrada</h4>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% include 'elements/pagination.html' %}
+		</div>
+	</div>
+{% endblock %}

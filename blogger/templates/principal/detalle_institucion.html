@@ -1,0 +1,8 @@
+{% extends 'layout/institucion_base.html' %}
+
+{% block content_instituto %}
+	{{ object.descripcion_institucion|safe }}
+	<div class="text-center">
+		<a href="{% url 'institucion_entrada' object.slug_institucion %}" class="btn btn-primary">Ver entradas</a>
+	</div>
+{% endblock %}

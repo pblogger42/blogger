@@ -1,0 +1,41 @@
+{% load custom_filters %}
+
+<header>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion">
+					<span class="sr-only"> desplegar/ocultar menú</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand page-scroll" href="#page-top"> Eri-Acaima</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navegacion">
+				<ul class="nav navbar-nav navbar-nav navbar-right">
+					<li class="hidden">
+						<li><a href="{% url 'inicio' %}">inicio</a></li>
+						<li><a href="#Acaima" data-toggle="modal">quienes somos</a></li>
+						<li><a href="">ir al repositorio</a></li>
+						<li class="dropdown">
+							<a class="page-scroll" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+								instituciones<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								{% autoescape off %}
+									{% build_menu_proyecto %}
+								{% endautoescape %}
+							</ul>
+						</li>
+						{% if user.is_authenticated %}
+							<li><a href="{% url 'logout' %}">Salir</a></li>
+						{% else %}
+							<li><a href="{% url 'login' %}">Ingresar</a></li>
+						{% endif %}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
