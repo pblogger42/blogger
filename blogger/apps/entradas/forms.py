@@ -7,7 +7,7 @@ class EntradaForm(forms.ModelForm):
 	class Meta:
 		model = Entrada
 		fields = '__all__'
-		exclude = ('institucion', 'usuario', 'fecha_actualizacion_entrada', 'slug_entrada')
+		exclude = ('institucion', 'usuario', 'fecha_actualizacion_entrada', 'slug_entrada', 'numero_visitas')
 		widgets = {
 			'titulo_entrada': TextInput(attrs = {'class': 'form-control', 'maxlength': '50', 'required': True}),
 			'descripcion_entrada': Textarea(),

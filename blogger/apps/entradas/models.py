@@ -18,6 +18,7 @@ class Entrada(models.Model):
 	slug_entrada = models.SlugField(max_length = 80, unique = True, blank = True, null = True)
 	descripcion_entrada = models.CharField(max_length = 2000)
 	imagen_portada = models.ImageField(upload_to = image_directory_path, default = 'img/none.jpg')
+	numero_visitas = models.IntegerField(default = 0)
 
 	def __unicode__(self):
 		return self.titulo_entrada
@@ -36,7 +37,7 @@ class Comentario(models.Model):
 	comentario_entrada = models.CharField(max_length = 1000)
 
 	def __unicode__(self):
-		return '{0} - {1}'.format(self.entrada.titulo_entrada, self.usuario.username)
+		return self.comentario_entrada
 
 	def __str__(self):
-		return '{0} - {1}'.format(self.entrada.titulo_entrada, self.usuario.username)
+		return self.comentario_entrada

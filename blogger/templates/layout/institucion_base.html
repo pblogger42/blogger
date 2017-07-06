@@ -1,5 +1,7 @@
 {% extends 'layout/base.html' %}
 
+{% load custom_filters %}
+
 {% load static %}
 
 {% block content_head %}
@@ -47,10 +49,13 @@
 						<a href="{% url 'institucion_entrada' object.slug_institucion %}">Página principal</a>
 					</li>
 					<li>
+						<a href="">Multimedia</a>
+					</li>
+					<li>
 						<a href="{% url 'institucion' object.slug_institucion %}" >Acerca de</a>
 					</li>
 					<li>
-						<a href="#">Contácto</a>
+						<a href="{% url 'institucion_contacto' object.slug_institucion %}">Contácto</a>
 					</li>
 				</ul>
 			</div>
@@ -58,7 +63,16 @@
 				{% block content_instituto %}{% endblock %}
 			</div>
 			<div class="col-md-2">
-				últimas entradas
+				<b>Últimas entradas</b>
+				<ul class="nav">
+					{% for entrada in object.slug_institucion|ultimas_entradas %}
+						<li>
+							<a href="{% url 'detalle_entrada' entrada.institucion.slug_institucion entrada.slug_entrada %}">
+								{{ entrada }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
 	</div>

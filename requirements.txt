@@ -1,5 +1,6 @@
 dj-database-url==0.4.2
 Django==1.9.6
+django-mail-templated==2.6.5
 gunicorn==19.7.1
 olefile==0.44
 Pillow==4.1.1

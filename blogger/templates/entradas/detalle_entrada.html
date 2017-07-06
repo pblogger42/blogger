@@ -13,6 +13,7 @@
 			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
 				<div class="text-center" style="margin-top: 10px;">
 					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">Editar entrada</a>
+					<a href="{% url 'institucion_entrada_eliminar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-danger open-modal" data-toggle="modal" data-target="#Modal">Eliminar entrada</a>
 				</div>
 			{% endif %}
 		</div>
@@ -28,6 +29,7 @@
 				{{ comentario.comentario_entrada|safe }}
 				{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or comentario.user == user %}
 					<a href="{% url 'institucion_comentario_editar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-warning open-modal" data-toggle="modal" data-target="#Modal">Editar comentario</a>
+					<a href="{% url 'institucion_comentario_eliminar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-danger open-modal" data-toggle="modal" data-target="#Modal">Eliminar comentario</a>
 				{% endif %}
 				<hr/>
 			</div>

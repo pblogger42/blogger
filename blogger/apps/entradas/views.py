@@ -7,6 +7,7 @@ from django.views.generic import *
 from django.db.models import Q
 from .models import *
 from .forms import *
+import datetime
 
 template_dir = 'entradas/'
 
@@ -39,10 +40,13 @@ class InstitucionEntradaDetalleView(ListView):
 	template_name = template_dir+'detalle_entrada.html'
 
 	def get_context_data(self, **kwargs):
+		entradas = Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
+		entradas.numero_visitas = entradas.numero_visitas + 1
+		entradas.save(update_fields = ['numero_visitas'])
 		context = super(InstitucionEntradaDetalleView, self).get_context_data(**kwargs)
 		context['title'] = 'Detalle de la entrada'
 		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
-		context['entrada'] = Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
+		context['entrada'] = entradas
 		return context
 
 	def get_queryset(self):
@@ -82,11 +86,32 @@ class InstitucionEntradaEditarView(SuccessMessageMixin, UpdateView):
 		context['url'] = reverse('institucion_entrada_editar', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2']})
 		return context
 
+	def form_valid(self, form):
+		form.instance.fecha_actualizacion_entrada = datetime.datetime.now()
+		form.save()
+		return super(InstitucionEntradaEditarView, self).form_valid(form)
+
 	def get_object(self):
 		return Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
 
 	def get_success_url(self):
 		return reverse('detalle_entrada', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.object.slug_entrada})
+
+class InstitucionEntradaEliminarView(DeleteView):
+	model = Entrada
+	template_name = 'layout/delete_general.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(InstitucionEntradaEliminarView, self).get_context_data(**kwargs)
+		context['title'] = 'Confirmación'
+		context['url'] = reverse('institucion_entrada_eliminar', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2']})
+		return context
+
+	def get_object(self):
+		return Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
+
+	def get_success_url(self):
+		return reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})
 
 class InstitucionComentarioCrearView(SuccessMessageMixin, CreateView):
 	template_name = 'layout/form_general.html'
@@ -112,7 +137,7 @@ class InstitucionComentarioCrearView(SuccessMessageMixin, CreateView):
 class InstitucionComentarioEditarView(SuccessMessageMixin, UpdateView):
 	model = Comentario
 	template_name = 'layout/form_general.html'
-	success_message = 'Comentario actualizada}o correctamente'
+	success_message = 'Comentario actualizado correctamente'
 	form_class = ComentarioForm
 
 	def get_context_data(self, **kwargs):
@@ -120,6 +145,19 @@ class InstitucionComentarioEditarView(SuccessMessageMixin, UpdateView):
 		context['title'] = 'Actualizar comentario'
 		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context['url'] = reverse('institucion_comentario_editar', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2'], 'pk': self.kwargs['pk']})
+		return context
+
+	def get_success_url(self):
+		return reverse('detalle_entrada', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2']})
+
+class InstitucionComentarioEliminarView(DeleteView):
+	model = Comentario
+	template_name = 'layout/delete_general.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(InstitucionComentarioEliminarView, self).get_context_data(**kwargs)
+		context['title'] = 'Confirmación'
+		context['url'] = reverse('institucion_comentario_eliminar', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2'], 'pk': self.kwargs['pk']})
 		return context
 
 	def get_success_url(self):

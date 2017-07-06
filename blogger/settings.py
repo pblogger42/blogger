@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 	'blogger.apps.principal',
 	'blogger.apps.principal.templatetags',
 	'blogger.apps.entradas',
+	'blogger.apps.multimedia',
+	'mail_templated',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -73,6 +75,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blogger.wsgi.application'
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = "pblogger42@gmail.com"
+EMAIL_HOST_PASSWORD = 'xuugkqkorkkirxrm'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

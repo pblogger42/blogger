@@ -1,14 +1,20 @@
 from django.conf.urls import patterns, url, include
 from .views import *
 
+comentario_action_url = [
+	url(r'^editar/$', InstitucionComentarioEditarView.as_view(), name = 'institucion_comentario_editar'),
+	url(r'^eliminar/$', InstitucionComentarioEliminarView.as_view(), name = 'institucion_comentario_eliminar')
+]
+
 comentario_url = [
 	url(r'^crear/$', InstitucionComentarioCrearView.as_view(), name = 'institucion_comentario_crear'),
-	url(r'^(?P<pk>\d+)/editar/$', InstitucionComentarioEditarView.as_view(), name = 'institucion_comentario_editar'),
+	url(r'^(?P<pk>\d+)/', include(comentario_action_url))
 ]
 
 entrada_url = [
 	url(r'^$', InstitucionEntradaDetalleView.as_view(), name = 'detalle_entrada'),
 	url(r'^editar-entrada/$', InstitucionEntradaEditarView.as_view(), name = 'institucion_entrada_editar'),
+	url(r'^eliminar-entrada/$', InstitucionEntradaEliminarView.as_view(), name = 'institucion_entrada_eliminar'),
 	url(r'^comentario/', include(comentario_url)),
 ]
 
