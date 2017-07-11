@@ -4,7 +4,7 @@
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">{{ title }}</h4>
 		</div>
-		<form role="form" action="{{ url }}" method="POST">
+		<form role="form" action="{{ url }}" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
 			{% csrf_token %}
 			<div class="modal-body">
 				{% for forms in form %}
@@ -21,3 +21,16 @@
 		</form>
 	</div>
 </div>
+<script>
+	$('#id_image_multimedia').parent().attr('style', 'display: none;');
+	$('#id_video_multimedia').parent().attr('style', 'display: none;');
+	$('#id_tipo_multimedia').change(function(){
+		if($(this).val() == 'v'){
+			$('#id_video_multimedia').parent().removeAttr('style');
+			$('#id_image_multimedia').parent().attr('style', 'display: none;');
+		}else{
+			$('#id_image_multimedia').parent().removeAttr('style');
+			$('#id_video_multimedia').parent().attr('style', 'display: none;');
+		}
+	});
+</script>

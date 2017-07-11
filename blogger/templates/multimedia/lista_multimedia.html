@@ -1,0 +1,41 @@
+{% extends 'layout/institucion_base.html' %}
+
+{% load static %}
+
+{% block content_head_institucion %}
+	<link rel="stylesheet" href="{% static 'css/light-box.min.css' %}">
+{% endblock content_head_institucion %}
+
+{% block content_instituto %}
+	<h1>
+		{{ title }}
+		{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
+			<a href="{% url 'institucion_multimedia_add' object.slug_institucion %}" class="btn btn-default open-modal" data-toggle="modal" data-target="#Modal">Subir archivo</a>
+		{% endif %}
+	</h1>
+	<div class="row">
+	{% for obj in object_list %}
+		<div class="col-md-4" style="max-height: 140px; overflow: hidden; margin-bottom: 10px">
+			<a href="{{ obj.url_resource }}" data-toggle="lightbox" data-title="{{ obj.nombre_multimedia }}" data-gallery="mixedgallery">
+				<img src="{{ obj.img_resource }}" class="img-responsive">
+			</a>
+		</div>
+	{% empty %}
+		<h3 class="text-center">No hay multimedia</h3>
+	{% endfor %}
+		<div class="col-md-12">
+			{% include 'elements/pagination.html' %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_script_institucion %}
+	<script src="{% static 'js/light-box.min.js' %}"></script>
+	<script>
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+			event.preventDefault();
+			$(this).ekkoLightbox();
+			$('.ekko-lightbox-container').parent().attr('style', 'padding: 0px;');
+		});
+	</script>
+{% endblock content_script_institucion %}

@@ -45,15 +45,3 @@ class InstitucionContactoView(FormView):
 
 	def get_success_url(self):
 		return reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})
-"""
-class InstitucionMultimediaView(ListView):
-	model = Multimedia
-	paginate_by = 20
-	template_name = template_dir+'lista_multimedia.html'
-
-	def get_context_data(self, **kwargs):
-		context = super(InstitucionMultimediaView, self).get_context_data(**kwargs)
-		context['title'] = 'Multimedia'
-		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
-		return context
-"""
