@@ -50,15 +50,22 @@
 		<div class="page-header text-center">
 			<h1>Instituciones Acaima</h1>
 		</div>
-		<div class="row">
-			{% for institucion in instituciones %}
+		{% for institucion in instituciones %}
+			{% if forloop.first %}
+			<div class="row">
+			{% endif %}
 				<div class="col-md-4 text-center">
 					<a href="{% url 'institucion' institucion.slug_institucion %}">
 						<img src="{% static institucion.logo_institucion.url %}" class="img-thumbnail img-responsive">
 						<h3>{{ institucion.nombre_institucion }}</h3>
 					</a>
 				</div>
-			{% endfor %}
-		</div>
+			{% if forloop.counter|divisibleby:3 %}
+			</div><div class="row">
+			{% endif %}
+			{% if forloop.last %}
+			</div>
+			{% endif %}
+		{% endfor %}
 	</div>
 {% endblock content %}
