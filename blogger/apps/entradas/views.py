@@ -17,9 +17,11 @@ class InstitucionEntradaView(ListView):
 	template_name = template_dir+'lista_entrada.html'
 
 	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context = super(InstitucionEntradaView, self).get_context_data(**kwargs)
 		context['title'] = 'Entradas'
-		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context['object'] = institucion
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li><li><a href="'+reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})+'">Entradas</a></li>'
 		return context
 
 	def get_form_kwargs(self):
@@ -43,9 +45,11 @@ class InstitucionEntradaDetalleView(ListView):
 		entradas = Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
 		entradas.numero_visitas = entradas.numero_visitas + 1
 		entradas.save(update_fields = ['numero_visitas'])
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context = super(InstitucionEntradaDetalleView, self).get_context_data(**kwargs)
 		context['title'] = 'Detalle de la entrada'
-		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context['object'] = institucion
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li><li><a href="'+reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})+'">Entradas</a></li><li><a href="'+reverse('detalle_entrada', kwargs = {'slug': self.kwargs['slug'], 'slug_2': self.kwargs['slug_2']})+'">'+entradas.titulo_entrada+'</a></li>'
 		context['entrada'] = entradas
 		return context
 

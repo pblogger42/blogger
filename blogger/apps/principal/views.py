@@ -21,8 +21,10 @@ class InstitucionView(DetailView):
 	template_name = template_dir+'detalle_institucion.html'
 
 	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context = super(InstitucionView, self).get_context_data(**kwargs)
 		context['title'] = 'Institucion'
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li>'
 		return context
 
 	def get_object(self):
@@ -34,9 +36,11 @@ class InstitucionContactoView(FormView):
 	form_class = ContactForm
 
 	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context = super(InstitucionContactoView, self).get_context_data(**kwargs)
 		context['title'] = 'Contácto'
-		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context['object'] = institucion
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li><li><a href="'+reverse('institucion_contacto', kwargs = {'slug': self.kwargs['slug']})+'">'+u'Contácto'+'</a></li>'
 		return context
 
 	def form_valid(self, form):

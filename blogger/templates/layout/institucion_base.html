@@ -29,6 +29,14 @@
 	</div>
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb">
+					<li>
+						<a href="{% url 'inicio' %}">Inicio</a>
+					</li>
+					{{ breadcrumb|safe }}
+				</ol>
+			</div>
 			<div class="col-md-12" style="margin-bottom: 20px;">
 				<form method='GET' action='{% url "institucion_entrada" object.slug_institucion %}' class="row" role='search'>
 					<div class="col-md-11">

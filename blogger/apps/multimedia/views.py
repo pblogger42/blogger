@@ -13,9 +13,11 @@ class InstitucionMultimediaView(ListView):
 	template_name = template_dir+'lista_multimedia.html'
 
 	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
 		context = super(InstitucionMultimediaView, self).get_context_data(**kwargs)
 		context['title'] = 'Multimedia'
-		context['object'] = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li><li><a href="'+reverse('institucion_multimedia', kwargs = {'slug': self.kwargs['slug']})+'">Multimedia</a></li>'
+		context['object'] = institucion
 		return context
 
 	def get_queryset(self):
