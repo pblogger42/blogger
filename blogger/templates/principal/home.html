@@ -52,10 +52,12 @@
 		</div>
 		<div class="row">
 			{% for institucion in instituciones %}
-				<a href="{% url 'institucion' institucion.slug_institucion %}" class="col-md-4 text-center">
-					<img src="{% static institucion.logo_institucion.url %}" class="img-thumbnail img-responsive">
-					<h3>{{ institucion.nombre_institucion }}</h3>
-				</a>
+				<div class="col-md-4 text-center">
+					<a href="{% url 'institucion' institucion.slug_institucion %}">
+						<img src="{% static institucion.logo_institucion.url %}" class="img-thumbnail img-responsive">
+						<h3>{{ institucion.nombre_institucion }}</h3>
+					</a>
+				</div>
 			{% endfor %}
 		</div>
 	</div>
