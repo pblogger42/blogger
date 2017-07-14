@@ -1,7 +1,7 @@
 {% load custom_filters %}
 
 <header>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-inverse" style="margin-bottom:0px; border-radius: 0px;" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion">
@@ -15,12 +15,12 @@
 			<div class="collapse navbar-collapse" id="navegacion">
 				<ul class="nav navbar-nav navbar-nav navbar-right">
 					<li class="hidden">
-						<li><a href="{% url 'inicio' %}">inicio</a></li>
-						<li><a href="#Acaima" data-toggle="modal">quienes somos</a></li>
-						<li><a href="">ir al repositorio</a></li>
+						<li><a href="{% url 'inicio' %}">Inicio</a></li>
+						<li><a href="#Acaima" data-toggle="modal">Quienes somos</a></li>
+						<li><a href="">Ir al repositorio</a></li>
 						<li class="dropdown">
 							<a class="page-scroll" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-								instituciones<span class="caret"></span>
+								Instituciones<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
 								{% autoescape off %}
@@ -32,6 +32,7 @@
 							<li><a href="{% url 'logout' %}">Salir</a></li>
 						{% else %}
 							<li><a href="{% url 'login' %}">Ingresar</a></li>
+							<li><a href="#">Registrarme</a></li>
 						{% endif %}
 					</li>
 				</ul>

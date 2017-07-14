@@ -21,18 +21,17 @@
 		{% endif %}
 	</h1>
 	{% for obj in object_list %}
-		<div class="row">
-			<a href="{% url 'detalle_entrada' obj.institucion.slug_institucion obj.slug_entrada %}" class="article">
-				<div class="col-md-4" style="max-height: 110px; width: 250px; overflow: hidden;">
-					<img  src='{% static obj.imagen_portada.url %}' class="img-responsive" alt="img-{{ obj.titulo_entrada }}" />
-				</div>
-				<div class="col-md-8">
-					<h3>{{ obj.titulo_entrada }}</h3>
-					<p><small><b>autór:</b> {{ obj.usuario.first_name }} {{ obj.usuario.last_name }}</small></p>
-					<p><small><b>Fecha de publicación:</b> {{ obj.fecha_entrada}}</small></p>
-					{{ obj.descripcion_entrada|safe|striptags|truncatechars:70}}... 
-				</div>
-			</a>
+		<div class="row article">
+			<div class="col-md-5" style="max-height: 325px; overflow: hidden;">
+				<img  src='{% static obj.imagen_portada.url %}' class="img-responsive" alt="img-{{ obj.titulo_entrada }}" />
+			</div>
+			<div class="col-md-7">
+				<h3>{{ obj.titulo_entrada }}</h3>
+				<p><small><b>autor:</b> {{ obj.usuario.first_name }} {{ obj.usuario.last_name }}</small></p>
+				<p><small><b>Fecha de publicación:</b> {{ obj.fecha_entrada}}</small></p>
+				{{ obj.descripcion_entrada|safe|striptags|truncatechars:250}}...
+				<p><a href="{% url 'detalle_entrada' obj.institucion.slug_institucion obj.slug_entrada %}" class="btn btn-primary">Leer más</a></p>
+			</div>
 		</div>
 		<hr/>
 	{% empty %}

@@ -13,7 +13,7 @@ template_dir = 'entradas/'
 
 class InstitucionEntradaView(ListView):
 	model = Entrada
-	paginate_by = 20
+	paginate_by = 10
 	template_name = template_dir+'lista_entrada.html'
 
 	def get_context_data(self, **kwargs):

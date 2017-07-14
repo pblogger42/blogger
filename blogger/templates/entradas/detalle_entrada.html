@@ -5,15 +5,30 @@
 {% block content_instituto %}
 	<div class="row">
 		<div class="col-md-12">
-			<div class="text-center">
-				<img  src='{% static entrada.imagen_portada.url %}' class="img-responsive" alt="img-{{ entrada.titulo_entrada }}" style="display: inline;"/>
-			</div>
 			<h3>{{ entrada.titulo_entrada }}</h3>
-			{{ entrada.descripcion_entrada|safe }}
+			<div class="text-center">
+				<img  src='{% static entrada.imagen_portada.url %}' class="img-responsive" style="width: 100%;" alt="img-{{ entrada.titulo_entrada }}" style="display: inline;"/>
+			</div>
+			<p><b>Publicado el {{ entrada.fecha_entrada }}</b></p>
+			<div class="row">
+				<div class="col-md-2">
+					Publicado por <b>{{ entrada.usuario.first_name }} {{ entrada.usuario.last_name }}</b>
+				</div>
+				<div class="col-md-10">
+					{{ entrada.descripcion_entrada|safe }}
+				</div>
+			</div>
+
 			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
 				<div class="text-center" style="margin-top: 10px;">
-					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">Editar entrada</a>
-					<a href="{% url 'institucion_entrada_eliminar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-danger open-modal" data-toggle="modal" data-target="#Modal">Eliminar entrada</a>
+					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">
+						<i class="glyphicon glyphicon-pencil"></i>
+						Editar entrada
+					</a>
+					<a href="{% url 'institucion_entrada_eliminar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-danger open-modal" data-toggle="modal" data-target="#Modal">
+						<i class="glyphicon glyphicon-remove"></i>
+						Eliminar entrada
+					</a>
 				</div>
 			{% endif %}
 		</div>

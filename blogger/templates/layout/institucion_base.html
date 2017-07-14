@@ -24,6 +24,19 @@
 {% endblock content_head %}
 
 {% block content %}
+	<div class="breadcrumb" style="margin:0px;">
+		<div class="container ico-social">
+			<a href="#" class="btn btn-default btn-lg">
+				<i class="fa fa-facebook-square"></i>
+			</a>
+			<a href="#" class="btn btn-default btn-lg">
+				<i class="fa fa-twitter-square"></i>
+			</a>
+			<a href="#" class="btn btn-default btn-lg">
+				<i class="fa fa-instagram"></i>
+			</a>
+		</div>
+	</div>
 	<div class="image-background-institucion">
 		<div class="title-institucion"></div>
 	</div>
@@ -39,10 +52,10 @@
 			</div>
 			<div class="col-md-12" style="margin-bottom: 20px;">
 				<form method='GET' action='{% url "institucion_entrada" object.slug_institucion %}' class="row" role='search'>
-					<div class="col-md-11">
+					<div class="col-xs-10 col-md-10">
 						<input type='text'  name='q' placeholder='buscar' class="form-control" value='{{ request.GET.q }}'> </input>
 					</div>
-					<button type="submit" class="btn btn-primary col-md-1">
+					<button type="submit" class="btn btn-primary col-xs-1 col-md-1">
 						<span class='glyphicon glyphicon-search'></span>
 					</button>
 				</form>
