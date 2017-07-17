@@ -16,6 +16,8 @@ $('.only-number').keypress(function(e){
 		return false;
 	}
 });
-$("img").error(function(){
-	$(this).attr('src', '/static/img/none.jpg');
+$(document).ready(function(){
+	$("img").error(function(){
+		$(this).attr('src', '/static/img/none.jpg');
+	});
 });
