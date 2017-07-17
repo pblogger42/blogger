@@ -1,2 +1,1 @@
-web: gunicorn blogger.wsgi
-worker: python manage-py celery worker -A blogger.celery --loglevel=info
+web: env > .env; env PYTHONUNBUFFERED=true honcho start -f Procfile.real 2>&1
