@@ -42,6 +42,8 @@ INSTALLED_APPS = [
 	'blogger.apps.entradas',
 	'blogger.apps.multimedia',
 	'mail_templated',
+	'djcelery',
+	'kombu.transport.django'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -98,6 +100,14 @@ else:
 			'PORT': '',
 		}
 	}
+	"""
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.sqlite3',
+			'NAME': 'dbsqlite',
+		}
+	}
+	"""
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

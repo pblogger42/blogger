@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from django.contrib.messages.views import SuccessMessageMixin
+from blogger.apps.principal.models import SuscripcionEntrada
 from django.core.urlresolvers import reverse_lazy, reverse
+from blogger.apps.principal.tasks import send_email_task
 from blogger.apps.principal.models import *
 from django.shortcuts import render
 from django.views.generic import *
@@ -71,7 +73,9 @@ class InstitucionEntradaCrearView(SuccessMessageMixin, CreateView):
 	def form_valid(self, form):
 		form.instance.usuario = self.request.user
 		form.instance.institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
-		form.save()
+		save_data = form.save()
+		for suscriber in SuscripcionEntrada.objects.all():
+			send_email_task.delay('email/email_entrada.tpl', suscriber.email, self.request.META['HTTP_HOST'], 'Nueva publicación', {'email': suscriber.email, 'entrada': save_data})
 		return super(InstitucionEntradaCrearView, self).form_valid(form)
 
 	def get_success_url(self):

@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from mail_templated import send_mail
+from .tasks import send_email_task
 from django.conf import settings
 from django.forms import *
 from django import forms
@@ -14,19 +15,14 @@ class ContactForm(forms.Form):
 	def send_email(self, slug_institucion, request):
 		institucion = Institucion.objects.get(slug_institucion = slug_institucion)
 		for users in institucion.userprofile_set.all():
-			data = {
-				'domain': request,
-				'protocol': 'http://',
-				'subject': 'Contácto',
-				'args': {
-					'nombre_admin': users.user.first_name+' '+users.user.last_name,
-					'email': self.cleaned_data['email'],
-					'nombre_completo': self.cleaned_data['fullname'],
-					'numero_telefonico': self.cleaned_data['cellphone'],
-					'mensaje_contact': self.cleaned_data['mensaje']
-				}
+			args = {
+				'nombre_admin': users.user.first_name+' '+users.user.last_name,
+				'email': self.cleaned_data['email'],
+				'nombre_completo': self.cleaned_data['fullname'],
+				'numero_telefonico': self.cleaned_data['cellphone'],
+				'mensaje_contact': self.cleaned_data['mensaje']
 			}
-			send_mail('email/email_contact.tpl', data, settings.EMAIL_HOST_USER, [users.user.email])
+			send_email_task.delay('email/email_contact.tpl', users.user.email, request, 'Contácto', args)
 
 class SuscribeForm(forms.Form):
 	email = forms.CharField(label = 'Email', widget = forms.EmailInput(attrs = {'class': 'form-control', 'placeholder': 'Digite el correo electrónico'}))
@@ -34,14 +30,6 @@ class SuscribeForm(forms.Form):
 	def suscribe(self, request):
 		email = self.cleaned_data['email']
 		if not SuscripcionEntrada.objects.filter(email = email).exists():
-			data = {
-				'domain': request,
-				'protocol': 'http://',
-				'subject': 'Suscripción a Eri-Acaima',
-				'args': {
-					'email': self.cleaned_data['email']
-				}
-			}
-			send_mail('email/email_suscriber.tpl', data, settings.EMAIL_HOST_USER, [email])
+			send_email_task.delay('email/email_suscriber.tpl', email, request, 'Suscripción a Eri-Acaima', {'email': self.cleaned_data['email']})
 			email_suscribe = SuscripcionEntrada(email = email)
 			email_suscribe.save()
