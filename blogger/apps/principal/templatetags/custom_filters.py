@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from blogger.apps.principal.forms import SuscribeForm
 from django.core.urlresolvers import reverse
 from blogger.apps.principal.models import *
 from blogger.apps.entradas.models import *
@@ -17,3 +18,7 @@ def build_menu_proyecto():
 @register.filter
 def ultimas_entradas(slug_institucion):
 	return Entrada.objects.filter(institucion__slug_institucion = slug_institucion).order_by('-numero_visitas')[:5]
+
+@register.inclusion_tag('principal/email_suscribe.html')
+def template_suscribe_form(request_path):
+	return {'form': SuscribeForm(), 'request_path': request_path}

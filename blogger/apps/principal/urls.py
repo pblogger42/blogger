@@ -10,5 +10,7 @@ pagina_institucion = [
 
 urlpatterns = patterns('blogger.apps.principal.views',
 	url(r'^$', InicioTemplateView.as_view(), name = 'inicio'),
+	url(r'^unsuscribe/$', 'unsuscribe_email', name = 'unsuscribe_email'),
+	url(r'^suscribe/$', SuscribeView.as_view(), name = 'suscribe_email'),
 	url(r'^(?P<slug>[\w-]+)/', include(pagina_institucion)),
 )

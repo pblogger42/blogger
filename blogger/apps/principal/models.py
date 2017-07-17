@@ -24,3 +24,13 @@ class Institucion(models.Model):
 	def save(self, *args, **kwargs):
 		self.slug_institucion = slugify(self.nombre_institucion)
 		super(Institucion, self).save()
+
+class SuscripcionEntrada(models.Model):
+	email = models.EmailField()
+	fecha_suscripcion = models.DateField(auto_now = True)
+
+	def __str__(self):
+		return self.email
+
+	def __unicode__(self):
+		return self.email

@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import *
 from .models import *
@@ -49,3 +50,19 @@ class InstitucionContactoView(FormView):
 
 	def get_success_url(self):
 		return reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})
+
+class SuscribeView(FormView):
+	template_name = template_dir+'email_suscribe.html'
+	success_message = 'Te has suscrito'
+	form_class = SuscribeForm
+
+	def form_valid(self, form):
+		form.suscribe(self.request.META['HTTP_HOST'])
+		return super(SuscribeView, self).form_valid(form)
+
+	def get_success_url(self):
+		return self.request.GET.get('next')
+
+def unsuscribe_email(request):
+	SuscripcionEntrada.objects.filter(email = request.GET.get('email')).delete()
+	return render(request, template_dir+'message_unsuscribe.html', {'title': 'Unsuscribe'})

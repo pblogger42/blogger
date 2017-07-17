@@ -27,3 +27,21 @@ class ContactForm(forms.Form):
 				}
 			}
 			send_mail('email/email_contact.tpl', data, settings.EMAIL_HOST_USER, [users.user.email])
+
+class SuscribeForm(forms.Form):
+	email = forms.CharField(label = 'Email', widget = forms.EmailInput(attrs = {'class': 'form-control', 'placeholder': 'Digite el correo electrónico'}))
+
+	def suscribe(self, request):
+		email = self.cleaned_data['email']
+		if not SuscripcionEntrada.objects.filter(email = email).exists():
+			data = {
+				'domain': request,
+				'protocol': 'http://',
+				'subject': 'Suscripción a Eri-Acaima',
+				'args': {
+					'email': self.cleaned_data['email']
+				}
+			}
+			send_mail('email/email_suscriber.tpl', data, settings.EMAIL_HOST_USER, [email])
+			email_suscribe = SuscripcionEntrada(email = email)
+			email_suscribe.save()
