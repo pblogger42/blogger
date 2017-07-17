@@ -5,6 +5,9 @@
 {% block content_instituto %}
 	<h2>{{ title }}</h2>
 	<form action="{{ url }}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+		{% for message in messages %}
+			<p class="text-{{ message.tags }}">{{ message }}</p>
+		{% endfor %}
 		{% csrf_token %}
 		{% for forms in form %}
 			<div class="form-group">
