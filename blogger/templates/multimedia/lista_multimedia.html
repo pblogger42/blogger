@@ -16,7 +16,7 @@
 	<div class="row">
 	{% for obj in object_list %}
 		<div class="col-md-4" style="max-height: 140px; overflow: hidden; margin-bottom: 10px">
-			<a href="{{ obj.url_resource }}" data-toggle="lightbox" data-title="{{ obj.nombre_multimedia }}" data-gallery="mixedgallery">
+			<a href="{% url 'institucion_multimedia_detalle' obj.institucion.slug_institucion obj.slug_multimedia %}" class="open-modal" data-toggle="modal" data-target="#Modal">
 				<img src="{{ obj.img_resource }}" class="img-responsive">
 			</a>
 		</div>
@@ -28,14 +28,3 @@
 		</div>
 	</div>
 {% endblock %}
-
-{% block content_script_institucion %}
-	<script src="{% static 'js/light-box.min.js' %}"></script>
-	<script>
-		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-			event.preventDefault();
-			$(this).ekkoLightbox();
-			$('.ekko-lightbox-container').parent().attr('style', 'padding: 0px;');
-		});
-	</script>
-{% endblock content_script_institucion %}

@@ -22,3 +22,15 @@ class MultimediaForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(MultimediaForm, self).__init__(*args, **kwargs)
 		self.fields['tipo_multimedia'].widget.attrs.update({'required': True, 'class': 'form-control'})
+
+class MultimediaComentarioForm(forms.ModelForm):
+	class Meta:
+		model = ComentarioMultimedia
+		fields = '__all__'
+		exclude = ('multimedia', 'usuario')
+		widgets = {
+			'comentario': Textarea()
+		}
+
+	def save_comentario(self):
+		return True

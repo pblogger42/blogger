@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from django.views.generic.edit import FormMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.generic import *
@@ -41,3 +42,16 @@ class InstitucionMultimediaCrearView(CreateView):
 
 	def get_success_url(self):
 		return reverse('institucion_multimedia', kwargs = {'slug': self.kwargs['slug']})
+
+class InstitucionMultimediaDetalleView(FormMixin, ListView):
+	model = ComentarioMultimedia
+	form_class = MultimediaComentarioForm
+	template_name = template_dir+'lista_comentario_multimedia.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(InstitucionMultimediaDetalleView, self).get_context_data(**kwargs)
+		context['object'] = Multimedia.objects.get(slug_multimedia = self.kwargs['slug_2'])
+		return context
+
+	def get_queryset(self):
+		return super(InstitucionMultimediaDetalleView, self).get_queryset().filter(multimedia__slug_multimedia = self.kwargs['slug_2'])
