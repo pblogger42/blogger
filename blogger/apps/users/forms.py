@@ -22,7 +22,7 @@ class SetPasswordForm(forms.Form):
 		return password2
 
 class UserForm(forms.ModelForm):
-	foto_usuario = forms.ImageField(label = 'Foto')
+	foto_usuario = forms.ImageField(label = 'Foto', required = False)
 
 	class Meta:
 		model = User
@@ -37,12 +37,11 @@ class UserForm(forms.ModelForm):
 		}
 
 	def save(self):
-		user = super(UserForm, self).save(commit = False)
+		user = super(UserForm, self).save()
 		profile_user = UserProfile.objects.get(user = user)
-		if self.cleaned_data['foto_usuario'] != '':
+		if self.cleaned_data['foto_usuario'] is not None:
 			profile_user.foto_usuario = self.cleaned_data['foto_usuario']
 			profile_user.save()
-		user.save()
 		return user
 
 class UserSignupForm(forms.ModelForm):

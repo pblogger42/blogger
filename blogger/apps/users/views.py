@@ -104,6 +104,10 @@ class PerfilUsuarioView(SuccessMessageMixin, UpdateView):
 		context['title'] = 'Mi perfil'
 		return context
 
+	def form_valid(self, form):
+		form.save()
+		return super(PerfilUsuarioView, self).form_valid(form)
+
 	def get_object(self, queryset = None):
 		return self.request.user
 
