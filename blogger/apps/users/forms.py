@@ -40,7 +40,6 @@ class UserForm(forms.ModelForm):
 		user = super(UserForm, self).save(commit = False)
 		profile_user = UserProfile.objects.get(user = user)
 		if self.cleaned_data['foto_usuario'] != '':
-			print profile_user
 			profile_user.foto_usuario = self.cleaned_data['foto_usuario']
 			profile_user.save()
 		user.save()
