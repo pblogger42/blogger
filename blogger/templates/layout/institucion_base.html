@@ -24,19 +24,6 @@
 {% endblock content_head %}
 
 {% block content %}
-	<div class="breadcrumb" style="margin:0px;">
-		<div class="container ico-social">
-			<a href="#" class="btn btn-default btn-lg">
-				<i class="fa fa-facebook-square"></i>
-			</a>
-			<a href="#" class="btn btn-default btn-lg">
-				<i class="fa fa-twitter-square"></i>
-			</a>
-			<a href="#" class="btn btn-default btn-lg">
-				<i class="fa fa-instagram"></i>
-			</a>
-		</div>
-	</div>
 	<div class="image-background-institucion">
 		<div class="title-institucion"></div>
 	</div>
@@ -78,6 +65,11 @@
 					<li>
 						<a href="{% url 'institucion_contacto' object.slug_institucion %}">Contácto</a>
 					</li>
+					{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
+						<li>
+							<a href="{% url 'institucion_usuario' object.slug_institucion %}">Usuarios</a>
+						</li>
+					{% endif %}
 				</ul>
 			</div>
 			<div class="col-md-8">

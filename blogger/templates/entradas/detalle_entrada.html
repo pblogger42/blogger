@@ -12,13 +12,16 @@
 			<p><b>Publicado el {{ entrada.fecha_entrada }}</b></p>
 			<div class="row">
 				<div class="col-md-2">
-					Publicado por <b>{{ entrada.usuario.first_name }} {{ entrada.usuario.last_name }}</b>
+					<p>Publicado por</p>
+					<div class="img-circle" style="width: 100px; height: 100px; overflow: hidden;">
+						<img src="{% static entrada.usuario.userprofile.foto_usuario.url %}" style="height: 100px; margin-left: -20px;">
+					</div>
+					<b>{{ entrada.usuario.first_name }} {{ entrada.usuario.last_name }}</b>
 				</div>
 				<div class="col-md-10">
 					{{ entrada.descripcion_entrada|safe }}
 				</div>
 			</div>
-
 			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
 				<div class="text-center" style="margin-top: 10px;">
 					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">
@@ -34,13 +37,27 @@
 		</div>
 	</div>
 	<div class="page-header">
-		<h3>Comentarios <a href="{% url 'institucion_comentario_crear' object.slug_institucion entrada.slug_entrada %}" class="btn btn-default open-modal" data-toggle="modal" data-target="#Modal">Comentar</a></h3>
+		<h3>
+			Comentarios
+			{% if user.is_authenticated %}
+				<a href="{% url 'institucion_comentario_crear' object.slug_institucion entrada.slug_entrada %}" class="btn btn-default open-modal" data-toggle="modal" data-target="#Modal">Comentar</a>
+			{% endif %}
+		</h3>
 	</div>
 	<div class="row">
 		{% for comentario in entrada.comentario_set.all %}
 			<div class="col-md-12">
-				<p><b>Usuario:</b> {{ comentario.usuario.first_name }} {{ comentario.usuario.last_name }}</p>
-				<p><b>Fecha de publicación:</b> {{ comentario.fecha }}</p>
+				<div class="row">
+					<div class="col-md-1">
+						<div class="img-circle" style="width: 50px; height: 50px; overflow: hidden;">
+							<img src="{% static comentario.usuario.userprofile.foto_usuario.url %}" style="height: 50px; margin-left: -20px;">
+						</div>
+					</div>
+					<div class="col-md-11">
+						<p><b>Usuario:</b> {{ comentario.usuario.first_name }} {{ comentario.usuario.last_name }}</p>
+						<p><b>Fecha de publicación:</b> {{ comentario.fecha }}</p>
+					</div>
+				</div>
 				{{ comentario.comentario_entrada|safe }}
 				{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or comentario.user == user %}
 					<a href="{% url 'institucion_comentario_editar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-warning open-modal" data-toggle="modal" data-target="#Modal">Editar comentario</a>

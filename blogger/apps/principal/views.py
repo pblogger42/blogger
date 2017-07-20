@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from blogger.apps.users.models import UserProfile
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -50,6 +51,46 @@ class InstitucionContactoView(FormView):
 
 	def get_success_url(self):
 		return reverse('institucion_entrada', kwargs = {'slug': self.kwargs['slug']})
+
+class InstitucionUsuarioView(ListView):
+	model = UserProfile
+	template_name = template_dir+'lista_usuario.html'
+
+	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context = super(InstitucionUsuarioView, self).get_context_data(**kwargs)
+		context['title'] = 'Detalle de la entrada'
+		context['object'] = institucion
+		context['breadcrumb'] = '<li><a href="'+reverse('institucion', kwargs = {'slug': self.kwargs['slug']})+'">'+institucion.nombre_institucion+'</a></li><li><a href="'+reverse('institucion_usuario', kwargs = {'slug': self.kwargs['slug']})+'">Usuarios</a></li>'
+		return context
+
+	def get_queryset(self):
+		return super(InstitucionUsuarioView, self).get_queryset().filter(institucion__slug_institucion = self.kwargs['slug'])
+
+class InstitucionUsuarioAddView(FormView):
+	template_name = 'layout/form_general.html'
+	success_message = 'Usuario agregado'
+	form_class = InstitucionUsuarioForm
+
+	def get_context_data(self, **kwargs):
+		institucion = Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+		context = super(InstitucionUsuarioAddView, self).get_context_data(**kwargs)
+		context['url'] = reverse('institucion_usuario_add', kwargs = {'slug': self.kwargs['slug']})
+		context['title'] = 'Agregar usuario'
+		return context
+
+	def form_valid(self, form):
+		form.save(self.kwargs['slug'])
+		return super(InstitucionUsuarioAddView, self).form_valid(form)
+
+	def get_success_url(self):
+		return reverse('institucion_usuario', kwargs = {'slug': self.kwargs['slug']})
+
+def InstitucionUsuarioDeleteView(request, slug, pk_userprofile):
+	user_institucion = UserProfile.objects.get(pk = pk_userprofile)
+	user_institucion.institucion = None
+	user_institucion.save()
+	return HttpResponseRedirect(reverse('institucion', kwargs = {'slug': slug}))
 
 class SuscribeView(FormView):
 	template_name = template_dir+'email_suscribe.html'

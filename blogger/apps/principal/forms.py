@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from blogger.apps.users.models import UserProfile
 from mail_templated import send_mail
 from .tasks import send_email_task
 from django.conf import settings
@@ -33,3 +34,15 @@ class SuscribeForm(forms.Form):
 			send_email_task.delay('email/email_suscriber.tpl', email, request, 'Suscripción a Eri-Acaima', {'email': self.cleaned_data['email']})
 			email_suscribe = SuscripcionEntrada(email = email)
 			email_suscribe.save()
+
+class InstitucionUsuarioForm(forms.Form):
+	usuario = forms.ChoiceField(label = 'Usuario', widget = forms.Select(attrs = {'class': 'form-control'}))
+
+	def save(self, slug_institucion):
+		user_profile = UserProfile.objects.get(pk = self.cleaned_data['usuario'])
+		user_profile.institucion = Institucion.objects.get(slug_institucion = slug_institucion)
+		user_profile.save()
+
+	def __init__(self, *args, **kwargs):
+		super(InstitucionUsuarioForm, self).__init__(*args, **kwargs)
+		self.fields['usuario'].choices = [('', 'Seleccione un usuario')]+[(x.pk, x.user.first_name+' '+x.user.last_name) for x in UserProfile.objects.filter(institucion = None)]

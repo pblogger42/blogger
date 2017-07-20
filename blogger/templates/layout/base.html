@@ -17,11 +17,36 @@
 	</head>
 	<body>
 		{% include 'elements/nav_content.html' %}
+		<div class="breadcrumb" style="margin:0px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="ico-social">
+							<a href="#" class="btn btn-default">
+								<i class="fa fa-facebook-square"></i>
+							</a>
+							<a href="#" class="btn btn-default">
+								<i class="fa fa-twitter-square"></i>
+							</a>
+							<a href="#" class="btn btn-default">
+								<i class="fa fa-instagram"></i>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 text-right">
+						{% if not user.is_authenticated %}
+							<a href="{% url 'login' %}" class="btn btn-primary">Ingresar</a>
+							<a href="{% url 'registrate' %}" class="btn btn-success">Registrarme</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
 		{% block content %}{% endblock content %}
 		<div class="container before-footer">
 			<div class="row">
 				<div class="col-md-6">
-					{% template_suscribe_form request.path %}
+					{% template_suscribe_form request.path user %}
 				</div>
 			</div>
 		</div>

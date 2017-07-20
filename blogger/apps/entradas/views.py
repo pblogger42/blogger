@@ -3,6 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from blogger.apps.principal.models import SuscripcionEntrada
 from django.core.urlresolvers import reverse_lazy, reverse
 from blogger.apps.principal.tasks import send_email_task
+from blogger.apps.principal.emails import *
 from blogger.apps.principal.models import *
 from django.shortcuts import render
 from django.views.generic import *
@@ -134,9 +135,17 @@ class InstitucionComentarioCrearView(SuccessMessageMixin, CreateView):
 		return context
 
 	def form_valid(self, form):
+		entrada = Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
 		form.instance.usuario = self.request.user
-		form.instance.entrada = Entrada.objects.get(slug_entrada = self.kwargs['slug_2'])
+		form.instance.entrada = entrada
 		form.save()
+		for usuario in Institucion.objects.get(slug_institucion = self.kwargs['slug']).userprofile_set.all():
+			args = {
+				'escritor': self.request.user,
+				'inst_user': usuario,
+				'entrada': entrada
+			}
+			app_send_email(usuario.user, self.request.META['HTTP_HOST'], 'Nuevo comentario', 'email/email_comentario_entrada.tpl', args)
 		return super(InstitucionComentarioCrearView, self).form_valid(form)
 
 	def get_success_url(self):

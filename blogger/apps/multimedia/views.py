@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from django.views.generic.edit import FormMixin
 from django.core.urlresolvers import reverse
+from blogger.apps.principal.emails import *
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import *
 from .models import *
@@ -55,3 +57,21 @@ class InstitucionMultimediaDetalleView(FormMixin, ListView):
 
 	def get_queryset(self):
 		return super(InstitucionMultimediaDetalleView, self).get_queryset().filter(multimedia__slug_multimedia = self.kwargs['slug_2'])
+
+	def post(self, request, *args, **kwargs):
+		message = 'Ha ocurrido un error, vuelva a intentarlo nuevamente'
+		type_message = 'false'
+		form =  self.get_form()
+		if form.is_valid():
+			multimedia = Multimedia.objects.get(slug_multimedia = self.kwargs['slug_2'])
+			form.save(form.cleaned_data['comentario'], multimedia, self.request.user)
+			for usuario in Institucion.objects.get(slug_institucion = self.kwargs['slug']).userprofile_set.all():
+				args = {
+					'escritor': self.request.user,
+					'inst_user': usuario,
+					'multimedia': multimedia
+				}
+				app_send_email(usuario.user, self.request.META['HTTP_HOST'], 'Nuevo comentario', 'email/email_comentario_multimedia.tpl', args)
+			message = 'Comentario realizado'
+			type_message = 'true'
+		return JsonResponse({'message': message})

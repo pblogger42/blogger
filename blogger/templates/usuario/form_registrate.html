@@ -12,7 +12,7 @@
 						{% for message in messages %}
 							<p class="text-{{ message.tags }}">{{ message }}</p>
 						{% endfor %}
-						<form role="form" action="{% url 'registrate' %}" method="POST">
+						<form role="form" action="{% url 'registrate' %}" enctype="multipart/form-data" method="POST">
 							{% csrf_token %}
 							{% for forms in form %}
 								<div class="form-group col-md-6">

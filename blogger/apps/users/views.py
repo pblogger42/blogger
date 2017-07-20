@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import get_user_model
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from blogger.apps.principal.emails import *
@@ -11,6 +11,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.views.generic import *
 from .forms import *
+import json
 
 var_dir_template = 'usuario/'
 
@@ -80,7 +81,7 @@ class UserRegistrateView(SuccessMessageMixin, FormView):
 	template_name = var_dir_template+'form_registrate.html'
 	success_message = 'Gracias por registrarse en Eri-Acaima.'
 	success_url = reverse_lazy('login')
-	form_class = UserForm
+	form_class = UserSignupForm
 
 	def get_context_data(self, **kwargs):
 		context = super(UserRegistrateView, self).get_context_data(**kwargs)
@@ -90,3 +91,44 @@ class UserRegistrateView(SuccessMessageMixin, FormView):
 	def form_valid(self, form):
 		form.save()
 		return super(UserRegistrateView, self).form_valid(form)
+
+class PerfilUsuarioView(SuccessMessageMixin, UpdateView):
+	model = User
+	template_name = var_dir_template+'perfil.html'
+	success_message = 'Usuario actualizado correctamente'
+	success_url = reverse_lazy('perfil')
+	form_class = UserForm
+
+	def get_context_data(self, **kwargs):
+		context = super(PerfilUsuarioView, self).get_context_data(**kwargs)
+		context['title'] = 'Mi perfil'
+		return context
+
+	def get_object(self, queryset = None):
+		return self.request.user
+
+def change_password(request):
+	if request.method == 'POST':
+		response = {}
+		form = ChangePasswordForm(request.POST)
+		if form.is_valid():
+			old_password = form.cleaned_data['old_password']
+			new_password = form.cleaned_data['new_password']
+			re_new_password = form.cleaned_data['re_new_password']
+			if new_password == re_new_password:
+				saveuser = User.objects.get(pk = request.user.pk)
+				if request.user.check_password(old_password):
+					saveuser.set_password(new_password);
+					saveuser.save()
+					response['type'] = 'success'
+					response['msg'] = 'Cambio de contraseña exitoso.'
+				else:
+					response['type'] = 'error'
+					response['msg'] = 'Contraseña antigua errónea.'
+			else:
+				response['type'] = 'error'
+				response['msg'] = 'Contraseñas no coinciden.'
+		return HttpResponse(json.dumps(response), "application/json")
+	else:
+		form = ChangePasswordForm()
+	return render(request, var_dir_template+'form_password.html', {'forms': form, 'title': 'Cambiar mi contraseña'})

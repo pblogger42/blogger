@@ -29,8 +29,9 @@ class MultimediaComentarioForm(forms.ModelForm):
 		fields = '__all__'
 		exclude = ('multimedia', 'usuario')
 		widgets = {
-			'comentario': Textarea()
+			'comentario': Textarea(attrs = {'style': 'height: 50px; width: 100%;', 'required': True})
 		}
 
-	def save_comentario(self):
-		return True
+	def save(self, comentario, multimedia_object, user):
+		comentario_multimedia = ComentarioMultimedia(usuario = user, multimedia = multimedia_object, comentario = comentario)
+		comentario_multimedia.save()

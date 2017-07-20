@@ -20,5 +20,9 @@ def ultimas_entradas(slug_institucion):
 	return Entrada.objects.filter(institucion__slug_institucion = slug_institucion).order_by('-numero_visitas')[:5]
 
 @register.inclusion_tag('principal/email_suscribe.html')
-def template_suscribe_form(request_path):
-	return {'form': SuscribeForm(), 'request_path': request_path}
+def template_suscribe_form(request_path, user):
+	response = {'form': SuscribeForm(), 'request_path': request_path}
+	if user.is_authenticated():
+		if SuscripcionEntrada.objects.filter(email = user.email).count() > 0:
+			response = {'form': ''}
+	return response

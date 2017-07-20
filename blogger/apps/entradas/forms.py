@@ -10,7 +10,7 @@ class EntradaForm(forms.ModelForm):
 		exclude = ('institucion', 'usuario', 'fecha_actualizacion_entrada', 'slug_entrada', 'numero_visitas')
 		widgets = {
 			'titulo_entrada': TextInput(attrs = {'class': 'form-control', 'maxlength': '50', 'required': True}),
-			'descripcion_entrada': Textarea(),
+			'descripcion_entrada': Textarea(attrs = {'class': 'textarea'}),
 		}
 		labels = {
 			'titulo_entrada': 'Título',
@@ -24,7 +24,7 @@ class ComentarioForm(forms.ModelForm):
 		fields = '__all__'
 		exclude = ('entrada', 'usuario')
 		widgets = {
-			'comentario_entrada': Textarea(),
+			'comentario_entrada': Textarea(attrs = {'class': 'textarea'}),
 		}
 		labels = {
 			'comentario_entrada': 'Comentario'

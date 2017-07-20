@@ -15,7 +15,7 @@
 	</h1>
 	<div class="row">
 	{% for obj in object_list %}
-		<div class="col-md-4" style="max-height: 140px; overflow: hidden; margin-bottom: 10px">
+		<div class="col-md-4" style="max-height: 140px; overflow: hidden; margin-bottom: 30px">
 			<a href="{% url 'institucion_multimedia_detalle' obj.institucion.slug_institucion obj.slug_multimedia %}" class="open-modal" data-toggle="modal" data-target="#Modal">
 				<img src="{{ obj.img_resource }}" class="img-responsive">
 			</a>
