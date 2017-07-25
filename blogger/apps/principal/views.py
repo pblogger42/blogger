@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from django.contrib.messages.views import SuccessMessageMixin
 from blogger.apps.users.models import UserProfile
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -31,6 +32,45 @@ class InstitucionView(DetailView):
 
 	def get_object(self):
 		return Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+
+class InstitucionCreateView(SuccessMessageMixin, CreateView):
+	template_name = 'layout/form_general.html'
+	success_message = 'Institución creado correctamente'
+	form_class = InstitucionForm
+
+	def get_context_data(self, **kwargs):
+		context = super(InstitucionCreateView, self).get_context_data(**kwargs)
+		context['title'] = 'Agregar institución'
+		context['url'] = reverse('institucion_crear')
+		return context
+
+	def form_valid(self, form):
+		institucion = form.save(commit = True)
+		profile_user = UserProfile.objects.get(user = self.request.user)
+		profile_user.institucion = institucion
+		profile_user.save()
+		return HttpResponseRedirect(self.get_success_url(institucion))
+
+	def get_success_url(self, institucion):
+		return reverse('institucion', kwargs = {'slug': institucion.slug_institucion})
+
+class InstitucionEditarView(SuccessMessageMixin, UpdateView):
+	model = Institucion
+	template_name = 'layout/form_general.html'
+	success_message = 'Institución actualizada correctamente'
+	form_class = InstitucionForm
+
+	def get_context_data(self, **kwargs):
+		context = super(InstitucionEditarView, self).get_context_data(**kwargs)
+		context['title'] = 'Actualizar institución'
+		context['url'] = reverse('institucion_editar', kwargs = {'slug': self.kwargs['slug']})
+		return context
+
+	def get_object(self):
+		return Institucion.objects.get(slug_institucion = self.kwargs['slug'])
+
+	def get_success_url(self):
+		return reverse('institucion', kwargs = {'slug': self.object.slug_institucion})
 
 class InstitucionContactoView(FormView):
 	template_name = template_dir+'form_contacto.html'

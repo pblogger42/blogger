@@ -65,7 +65,7 @@
 					<li>
 						<a href="{% url 'institucion_contacto' object.slug_institucion %}">Contácto</a>
 					</li>
-					{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
+					{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or user.is_superuser %}
 						<li>
 							<a href="{% url 'institucion_usuario' object.slug_institucion %}">Usuarios</a>
 						</li>

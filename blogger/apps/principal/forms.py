@@ -46,3 +46,19 @@ class InstitucionUsuarioForm(forms.Form):
 	def __init__(self, *args, **kwargs):
 		super(InstitucionUsuarioForm, self).__init__(*args, **kwargs)
 		self.fields['usuario'].choices = [('', 'Seleccione un usuario')]+[(x.pk, x.user.first_name+' '+x.user.last_name) for x in UserProfile.objects.filter(institucion = None)]
+
+class InstitucionForm(forms.ModelForm):
+	class Meta:
+		model = Institucion
+		fields = '__all__'
+		exclude = ('slug_institucion', '')
+		widgets = {
+			'nombre_institucion': TextInput(attrs = {'class': 'form-control', 'maxlength': '50', 'required': True}),
+			'descripcion_institucion': Textarea(attrs = {'class': 'textarea'})
+		}
+		labels = {
+			'nombre_institucion': 'Nombre institución',
+			'logo_institucion': 'Logo institución',
+			'descripcion_institucion': 'Descripción de la institución',
+			'image_back_institucion': 'Imagen portada'
+		}

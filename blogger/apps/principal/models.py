@@ -12,8 +12,8 @@ class Institucion(models.Model):
 	nombre_institucion = models.CharField(max_length = 50)
 	slug_institucion = models.SlugField(max_length = 80, unique = True, blank = True, null = True)
 	logo_institucion = models.ImageField(upload_to = image_directory_path)
-	descripcion_institucion = models.CharField(max_length = 2000)
 	image_back_institucion = models.ImageField(upload_to = image_directory_path)
+	descripcion_institucion = models.CharField(max_length = 10000)
 
 	def __str__(self):
 		return self.nombre_institucion

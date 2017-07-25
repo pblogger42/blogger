@@ -13,6 +13,7 @@ pagina_institucion = [
 	url(r'^contacto/$', InstitucionContactoView.as_view(), name = 'institucion_contacto'),
 	url(r'^multimedia/', include('blogger.apps.multimedia.urls')),
 	url(r'^usuarios/', include(usuarios_institucion)),
+	url(r'^editar/$', InstitucionEditarView.as_view(), name = 'institucion_editar'),
 	url(r'^', include('blogger.apps.entradas.urls')),
 ]
 
@@ -20,5 +21,6 @@ urlpatterns = patterns('blogger.apps.principal.views',
 	url(r'^$', InicioTemplateView.as_view(), name = 'inicio'),
 	url(r'^unsuscribe/$', 'unsuscribe_email', name = 'unsuscribe_email'),
 	url(r'^suscribe/$', SuscribeView.as_view(), name = 'suscribe_email'),
+	url(r'^nueva-institucion/$', InstitucionCreateView.as_view(), name = 'institucion_crear'),
 	url(r'^(?P<slug>[\w-]+)/', include(pagina_institucion)),
 )

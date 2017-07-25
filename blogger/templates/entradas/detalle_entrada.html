@@ -7,7 +7,7 @@
 		<div class="col-md-12">
 			<h3>{{ entrada.titulo_entrada }}</h3>
 			<div class="text-center">
-				<img  src='{% static entrada.imagen_portada.url %}' class="img-responsive" style="width: 100%;" alt="img-{{ entrada.titulo_entrada }}" style="display: inline;"/>
+				<img src='{% static entrada.imagen_portada.url %}' class="img-responsive" style="width: 100%;" alt="img-{{ entrada.titulo_entrada }}" style="display: inline;"/>
 			</div>
 			<p><b>Publicado el {{ entrada.fecha_entrada }}</b></p>
 			<div class="row">
@@ -22,7 +22,7 @@
 					{{ entrada.descripcion_entrada|safe }}
 				</div>
 			</div>
-			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion %}
+			{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or user.is_superuser %}
 				<div class="text-center" style="margin-top: 10px;">
 					<a href="{% url 'institucion_entrada_editar' object.slug_institucion entrada.slug_entrada %}" class="btn btn-primary">
 						<i class="glyphicon glyphicon-pencil"></i>
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				{{ comentario.comentario_entrada|safe }}
-				{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or comentario.user == user %}
+				{% if user.userprofile.institucion.slug_institucion == object.slug_institucion or comentario.user == user or user.is_superuser %}
 					<a href="{% url 'institucion_comentario_editar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-warning open-modal" data-toggle="modal" data-target="#Modal">Editar comentario</a>
 					<a href="{% url 'institucion_comentario_eliminar' object.slug_institucion entrada.slug_entrada comentario.pk %}" class="btn btn-danger open-modal" data-toggle="modal" data-target="#Modal">Eliminar comentario</a>
 				{% endif %}
