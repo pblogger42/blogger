@@ -11,7 +11,7 @@ register = template.Library()
 @register.assignment_tag
 def build_menu_proyecto():
 	data_institucion = ''
-	for institucion in Institucion.objects.all():
+	for institucion in Institucion.objects.filter(estado = '1'):
 		data_institucion += '<li><a href="'+reverse('institucion', kwargs = {'slug': institucion.slug_institucion})+'">'+institucion.nombre_institucion+'</a></li>'
 	return data_institucion
 

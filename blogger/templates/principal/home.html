@@ -9,7 +9,7 @@
 {% endblock content_head %}
 
 {% block content %}
-	<div class="container">
+	<div class="container" style="box-shadow: 0px 0px 18px 0px rgba(48, 50, 50, 0.48); padding: 0px;">
 		<div id="carousel" class="carousel slide" data-ride="carousel" style="margin-bottom: 0;">
 		<ol class="carousel-indicators">
 			<li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -45,34 +45,34 @@
 			<span class="sr-only">Next</span>
 		</a>
 		</div>
-	</div>
-	<div class="container">
-		<div class="page-header text-center">
-			<h1>Instituciones Acaima</h1>
-		</div>
-		{% for institucion in instituciones %}
-			{% if forloop.first %}
-			<div class="row">
-			{% endif %}
-				<div class="col-md-6">
-					<div class="row">
-						<div class="col-md-5 text-center">
-							<img src="{% static institucion.logo_institucion.url %}" class="img-thumbnail img-responsive">
-						</div>
-						<div class="col-md-7">
-							<h4>
-								{{ institucion.nombre_institucion }}.
-								<a href="{% url 'institucion' institucion.slug_institucion %}">Más información</a>
-							</h4>
+		<div class="container">
+			<div class="page-header text-center">
+				<h1>Instituciones Acaima</h1>
+			</div>
+			{% for institucion in instituciones %}
+				{% if forloop.first %}
+				<div class="row" style="margin-bottom: 20px;">
+				{% endif %}
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-5 text-center">
+								<img src="{% static institucion.logo_institucion.url %}" class="img-thumbnail img-responsive">
+							</div>
+							<div class="col-md-7">
+								<h4>
+									{{ institucion.nombre_institucion }}.
+									<a href="{% url 'institucion' institucion.slug_institucion %}">Más información</a>
+								</h4>
+							</div>
 						</div>
 					</div>
+				{% if forloop.counter|divisibleby:2 %}
+				</div><div class="row" style="margin-bottom: 20px;">
+				{% endif %}
+				{% if forloop.last %}
 				</div>
-			{% if forloop.counter|divisibleby:2 %}
-			</div><div class="row">
-			{% endif %}
-			{% if forloop.last %}
-			</div>
-			{% endif %}
-		{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</div>
 	</div>
 {% endblock content %}

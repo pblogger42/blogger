@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db import models
 
+CHOICE_ESTADO = (
+	('1', 'Activo'),
+	('2', 'Inactivo')
+)
+
 def image_directory_path(instance, filename):
 	return 'img/instituciones/{0}/{1}'.format(instance.slug_institucion, filename)
 
@@ -14,6 +19,7 @@ class Institucion(models.Model):
 	logo_institucion = models.ImageField(upload_to = image_directory_path)
 	image_back_institucion = models.ImageField(upload_to = image_directory_path)
 	descripcion_institucion = models.CharField(max_length = 10000)
+	estado = models.CharField(max_length = 1, default = '1', choices = CHOICE_ESTADO)
 
 	def __str__(self):
 		return self.nombre_institucion

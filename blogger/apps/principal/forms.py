@@ -62,3 +62,7 @@ class InstitucionForm(forms.ModelForm):
 			'descripcion_institucion': 'Descripción de la institución',
 			'image_back_institucion': 'Imagen portada'
 		}
+
+	def __init__(self, *args, **kwargs):
+		super(InstitucionForm, self).__init__(*args, **kwargs)
+		self.fields['estado'].widget.attrs = {'class': 'form-control'}
