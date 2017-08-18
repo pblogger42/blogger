@@ -17,7 +17,7 @@ def build_menu_proyecto():
 
 @register.filter
 def ultimas_entradas(slug_institucion):
-	return Entrada.objects.filter(institucion__slug_institucion = slug_institucion).order_by('-numero_visitas')[:5]
+	return Entrada.objects.filter(institucion__slug_institucion = slug_institucion).order_by('-id')[:5]
 
 @register.inclusion_tag('principal/email_suscribe.html')
 def template_suscribe_form(request_path, user):

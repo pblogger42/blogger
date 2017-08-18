@@ -34,7 +34,7 @@ class Comentario(models.Model):
 	fecha = models.DateField(auto_now = True)
 	usuario = models.ForeignKey(User)
 	entrada = models.ForeignKey(Entrada)
-	comentario_entrada = models.CharField(max_length = 1000)
+	comentario_entrada = models.CharField(max_length = 5000)
 
 	def __unicode__(self):
 		return self.comentario_entrada

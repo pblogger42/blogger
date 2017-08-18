@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 	'blogger.apps.multimedia',
 	'mail_templated',
 	'djcelery',
-	'kombu.transport.django'
+	'kombu.transport.django',
 ]
 
 MIDDLEWARE_CLASSES = [

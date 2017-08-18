@@ -47,7 +47,7 @@ class Multimedia(models.Model):
 class ComentarioMultimedia(models.Model):
 	usuario = models.ForeignKey(User)
 	multimedia = models.ForeignKey(Multimedia)
-	comentario = models.CharField(max_length = 1000)
+	comentario = models.CharField(max_length = 5000)
 
 	def __str__(self):
 		return self.multimedia.slug_multimedia+' - '+self.comentario
