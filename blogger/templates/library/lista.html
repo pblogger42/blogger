@@ -1,3 +1,0 @@
-{% for libro in object_list %}
-     <li>{{ libro }} <a href="{% url 'editar_libro' libro.pk %}" title="">Editar</a> <a href="{% url 'eliminar_libro' libro.pk %}" title="">Eliminar</a></li>
-{% endfor %}
