@@ -40,3 +40,17 @@ class SuscripcionEntrada(models.Model):
 
 	def __unicode__(self):
 		return self.email
+
+class Slider(models.Model):
+	foto = models.ImageField(upload_to = 'img/')
+	titulo = models.CharField(max_length = 50)
+
+	def __str__(self):
+		return self.titulo
+
+	def __unicode__(self):
+		return self.titulo
+
+class InstitucionSlider(models.Model):
+	institucion = models.ForeignKey(Institucion)
+	foto = models.ImageField(upload_to = image_directory_path)

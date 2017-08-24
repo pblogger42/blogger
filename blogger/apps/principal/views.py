@@ -16,6 +16,7 @@ class InicioTemplateView(TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(InicioTemplateView, self).get_context_data(**kwargs)
 		context['instituciones'] = Institucion.objects.filter(estado = '1')
+		context['sliders'] = Slider.objects.all()
 		context['title'] = 'Bienvenido'
 		return context
 
