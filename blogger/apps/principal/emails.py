@@ -18,4 +18,5 @@ def app_send_email(user, request, title, template, args):
 		'args': args
 	}
 	email_template_name = template
-	send_mail(email_template_name, data, settings.DEFAULT_FROM_EMAIL, [user.email])
+	return True
+	#send_mail(email_template_name, data, settings.DEFAULT_FROM_EMAIL, [user.email])
